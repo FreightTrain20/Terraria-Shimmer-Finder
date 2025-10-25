@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terraria Shimmer Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        label { display: inline-block; width: 200px; }
+        input, select { margin: 5px; padding: 5px; }
+        button { padding: 10px 20px; margin: 10px 5px; }
+        #results { font-weight: bold; color: green; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Terraria Shimmer Finder</h1>
+
+    <div class="section">
+        <h2>Guide Information</h2>
+        <label for="guidename">Enter World's First Guide Name:</label>
+        <input type="text" id="guidename" placeholder="e.g. Andrew"><br>
+        <button onclick="checkGuide()">Check Guide</button>
+        <div id="guideConfirm" style="display:none;">
+            Guide's name is <span id="guideNameDisplay"></span> Correct?
+            <button onclick="guideConfirm(true)">Yes</button>
+            <button onclick="guideConfirm(false)">No</button>
+        </div>
+    </div>
+
+    <div id="worldSection" style="display:none;" class="section">
+        <h2>World Information</h2>
+        <label for="worldSize">World Size:</label>
+        <select id="worldSize">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select><br>
+        <button onclick="checkWorldSize()">Check World Size</button>
+        <div id="worldConfirm" style="display:none;">
+            World Size is <span id="worldSizeDisplay"></span> Correct?
+            <button onclick="worldConfirm(true)">Yes</button>
+            <button onclick="worldConfirm(false)">No</button>
+        </div>
+    </div>
+
+    <div id="biomeSection" style="display:none;" class="section">
+        <h2>Biome Information</h2>
+        <label>Select Biome:</label>
+        <select id="biomeSelect" onchange="showSideOptions()">
+            <option value="">-- Select Biome --</option>
+            <option value="Snow">Snow</option>
+            <option value="Dungeon">Dungeon</option>
+            <option value="Jungle">Jungle</option>
+        </select><br>
+        <div id="sideOptions" style="display:none;">
+            <label>Select Side:</label>
+            <select id="sideSelect">
+                <option value="1">Left</option>
+                <option value="2">Right</option>
+            </select><br>
+        </div>
+        <button onclick="checkBiome()" id="checkBiomeBtn" style="display:none;">Check Biome</button>
+        <div id="biomeConfirm" style="display:none;">
+            Biome is <span id="biomeDisplay"></span> Correct?
+            <button onclick="biomeConfirm(true)">Yes</button>
+            <button onclick="biomeConfirm(false)">No</button>
+        </div>
+    </div>
+
+    <div id="results" style="display:none;" class="section">
+        <h2>Shimmer Coordinates</h2>
+        <p>Your Shimmer Compass Mark is at X = <span id="coordinateResult"></span></p>
+        <p>Use this with your Terraria compass to find Shimmer!</p>
+    </div>
+
+    <script>
+        let guideRNG = -1;
+        let worldSize = '';
+        let biome = '';
+        let side = '';
+
+        const guideMap = {
+            "joe": 0.0000,
+            "connor": 0.0278,
+            "tanner": 0.0556,
+            "wyatt": 0.0833,
+            "cody": 0.1111,
+            "levi": 0.1389,
+            "luke": 0.1667,
+            "jack": 0.1944,
+            "scott": 0.2222,
+            "logan": 0.2500,
+            "cole": 0.2778,
+            "asher": 0.3056,
+            "bradley": 0.3333,
+            "jacob": 0.3611,
+            "garrett": 0.3889,
+            "dylan": 0.4167,
+            "maxwell": 0.4444,
+            "steve": 0.4722,
+            "brett": 0.5000,
+            "andrew": 0.5278,
+            "harley": 0.5556,
+            "kyle": 0.5833,
+            "jake": 0.6111,
+            "ryan": 0.6389,
+            "jeffrey": 0.6667,
+            "seth": 0.6944,
+            "marty": 0.7222,
+            "brandon": 0.7500,
+            "zach": 0.7778,
+            "jeff": 0.8056,
+            "daniel": 0.8333,
+            "trent": 0.8611,
+            "kevin": 0.8889,
+            "brian": 0.9167,
+            "colin": 0.9444,
+            "jan": 0.9722
+        };
+
+        function checkGuide() {
+            const name = document.getElementById('guidename').value.trim().toLowerCase();
+            if (guideMap[name] !== undefined) {
+                guideRNG = guideMap[name];
+                document.getElementById('guideNameDisplay').textContent = document.getElementById('guidename').value;
+                document.getElementById('guideConfirm').style.display = 'block';
+            } else {
+                alert('Guide name not found in list.');
+            }
+        }
+
+        function guideConfirm(confirmed) {
+            if (confirmed) {
+                document.getElementById('worldSection').style.display = 'block';
+            } else {
+                alert('Please restart the program to enter the correct name.');
+            }
+        }
+
+        function checkWorldSize() {
+            worldSize = document.getElementById('worldSize').value;
+            document.getElementById('worldSizeDisplay').textContent = worldSize;
+            document.getElementById('worldConfirm').style.display = 'block';
+        }
+
+        function worldConfirm(confirmed) {
+            if (confirmed) {
+                document.getElementById('biomeSection').style.display = 'block';
+            } else {
+                alert('Please restart the program to enter the correct world size.');
+            }
+        }
+
+        function showSideOptions() {
+            const biomeSelect = document.getElementById('biomeSelect');
+            if (biomeSelect.value) {
+                document.getElementById('sideOptions').style.display = 'block';
+                document.getElementById('checkBiomeBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('sideOptions').style.display = 'none';
+                document.getElementById('checkBiomeBtn').style.display = 'none';
+            }
+        }
+
+        function checkBiome() {
+            biome = document.getElementById('biomeSelect').value;
+            side = document.getElementById('sideSelect').value;
+            document.getElementById('biomeDisplay').textContent = biome;
+            document.getElementById('biomeConfirm').style.display = 'block';
+        }
+
+        function biomeConfirm(confirmed) {
+            if (confirmed) {
+                calculateCoordinates();
+            } else {
+                alert('Please restart the program to enter the correct biome.');
+            }
+        }
+
+        function calculateCoordinates() {
+            let coord;
+            const x = guideRNG;
+
+            if (side === "1") { // Side 1
+                if (worldSize === "Small") {
+                    if (biome === "Jungle") {
+                        coord = 3800 - ((3800 - 3276) * x); // jungle on left
+                    } else { // dungeon or snow
+                        coord = 3276 + ((3800 - 3276) * x); // dungeon/snow on right
+                    }
+                } else if (worldSize === "Medium") {
+                    if (biome === "Jungle") {
+                        coord = 6000 - ((6000 - 4992) * x);
+                    } else { // dungeon or snow
+                        coord = 4992 + ((6000 - 4992) * x);
+                    }
+                } else if (worldSize === "Large") {
+                    if (biome === "Jungle") {
+                        coord = 8000 - ((8000 - 6552) * x);
+                    } else { // dungeon or snow
+                        coord = 6552 + ((8000 - 6552) * x);
+                    }
+                }
+            } else if (side === "2") { // Side 2
+                if (worldSize === "Small") {
+                    if (biome === "Jungle") {
+                        coord = 3276 + ((3800 - 3276) * x); // jungle on right
+                    } else { // dungeon or snow
+                        coord = 3800 - ((3800 - 3276) * x); // dungeon/snow on left
+                    }
+                } else if (worldSize === "Medium") {
+                    if (biome === "Jungle") {
+                        coord = 4992 + ((6000 - 4992) * x);
+                    } else { // dungeon or snow
+                        coord = 6000 - ((6000 - 4992) * x);
+                    }
+                } else if (worldSize === "Large") {
+                    if (biome === "Jungle") {
+                        coord = 6552 + ((8000 - 6552) * x);
+                    } else { // dungeon or snow
+                        coord = 8000 - ((8000 - 6552) * x);
+                    }
+                }
+            }
+
+            document.getElementById('coordinateResult').textContent = Math.round(coord);
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
